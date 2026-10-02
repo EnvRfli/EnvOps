@@ -45,31 +45,34 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProjectRoot = Split-Path -Parent $ScriptDir
 Set-Location $ProjectRoot
 
-Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "  EnvOps — Ultra-Slim ARM64 Release Build Pipeline" -ForegroundColor White
-Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "Project Root : $ProjectRoot"
-Write-Host "Architecture : android-arm64 (64-bit physical mobile devices)"
+Write-Host '==========================================================' -ForegroundColor Cyan
+Write-Host '  EnvOps — Ultra-Slim ARM64 Release Build Pipeline' -ForegroundColor White
+Write-Host '==========================================================' -ForegroundColor Cyan
+Write-Host ('Project Root : ' + $ProjectRoot)
+Write-Host 'Architecture : android-arm64 (64-bit physical mobile devices)'
 
 # 1. Pre-flight Quality Checks
 if (-not $SkipTests) {
-    Write-Host "`n[1/4] Running Static Analysis (flutter analyze)..." -ForegroundColor Yellow
+    Write-Host ''
+    Write-Host '[1/4] Running Static Analysis (flutter analyze)...' -ForegroundColor Yellow
     flutter analyze
     if ($LASTEXITCODE -ne 0) {
-        Write-Error "flutter analyze reported issues. Build aborted."
+        Write-Error 'flutter analyze reported issues. Build aborted.'
         exit 1
     }
-    Write-Host "Static analysis passed with 0 issues." -ForegroundColor Green
+    Write-Host 'Static analysis passed with 0 issues.' -ForegroundColor Green
 
-    Write-Host "`n[2/4] Running Automated Tests (flutter test)..." -ForegroundColor Yellow
+    Write-Host ''
+    Write-Host '[2/4] Running Automated Tests (flutter test)...' -ForegroundColor Yellow
     flutter test
     if ($LASTEXITCODE -ne 0) {
-        Write-Error "Automated test suite failed. Build aborted."
+        Write-Error 'Automated test suite failed. Build aborted.'
         exit 1
     }
-    Write-Host "All automated tests passed successfully." -ForegroundColor Green
+    Write-Host 'All automated tests passed successfully.' -ForegroundColor Green
 } else {
-    Write-Host "`n[1/4 & 2/4] Pre-flight tests skipped via -SkipTests flag." -ForegroundColor DarkGray
+    Write-Host ''
+    Write-Host '[1/4 & 2/4] Pre-flight tests skipped via -SkipTests flag.' -ForegroundColor DarkGray
 }
 
 # 2. Build Arguments Setup
@@ -86,30 +89,31 @@ $BuildArgs = @(
 )
 
 if ($NoTreeShake) {
-    Write-Host "Icon tree shaking disabled (--no-tree-shake-icons)." -ForegroundColor DarkYellow
+    Write-Host 'Icon tree shaking disabled (--no-tree-shake-icons).' -ForegroundColor DarkYellow
     $BuildArgs += "--no-tree-shake-icons"
 } else {
-    Write-Host "Icon font tree-shaking active for maximum size reduction." -ForegroundColor DarkCyan
+    Write-Host 'Icon font tree-shaking active for maximum size reduction.' -ForegroundColor DarkCyan
 }
 
 # 3. Execute Build
-Write-Host "`n[3/4] Compiling Optimized ARM64 APK with Flutter..." -ForegroundColor Yellow
-Write-Host "Command: flutter $($BuildArgs -join ' ')" -ForegroundColor DarkGray
+Write-Host ''
+Write-Host '[3/4] Compiling Optimized ARM64 APK with Flutter...' -ForegroundColor Yellow
+Write-Host ('Command: flutter ' + ($BuildArgs -join ' ')) -ForegroundColor DarkGray
 
 $Stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 & flutter $BuildArgs
 if ($LASTEXITCODE -ne 0) {
-    Write-Error "Flutter build failed with exit code $LASTEXITCODE."
+    Write-Error ('Flutter build failed with exit code ' + $LASTEXITCODE)
     exit $LASTEXITCODE
 }
 $Stopwatch.Stop()
 
 # 4. Result & APK Size Inspection
-Write-Host "`n[4/4] Verifying Generated APK..." -ForegroundColor Yellow
+Write-Host ''
+Write-Host '[4/4] Verifying Generated APK...' -ForegroundColor Yellow
 
 $ApkPath = Join-Path $ProjectRoot "build\app\outputs\flutter-apk\app-release.apk"
 if (-not (Test-Path $ApkPath)) {
-    # Check arm64 specific name if generated
     $Arm64Apk = Join-Path $ProjectRoot "build\app\outputs\flutter-apk\app-arm64-v8a-release.apk"
     if (Test-Path $Arm64Apk) {
         $ApkPath = $Arm64Apk
@@ -120,18 +124,21 @@ if (Test-Path $ApkPath) {
     $ApkItem = Get-Item $ApkPath
     $SizeBytes = $ApkItem.Length
     $SizeMB = [math]::Round($SizeBytes / 1MB, 2)
+    $Duration = [math]::Round($Stopwatch.Elapsed.TotalSeconds, 1)
+    $FullApkPath = $ApkItem.FullName
 
-    Write-Host "==========================================================" -ForegroundColor Green
-    Write-Host "  BUILD SUCCESSFUL!" -ForegroundColor Green
-    Write-Host "==========================================================" -ForegroundColor Green
-    Write-Host "APK Location : $($ApkItem.FullName)" -ForegroundColor White
-    Write-Host "APK Size     : $SizeMB MB ($SizeBytes bytes)" -ForegroundColor Cyan
-    Write-Host "Build Time   : $([math]::Round($Stopwatch.Elapsed.TotalSeconds, 1)) seconds"
-    Write-Host "Target ABI   : ARM64-v8a (Clean, single-arch standalone)"
-    Write-Host "Debug Symbols: $SymbolsDir"
-    Write-Host "`nInstall to your connected Android phone using ADB:" -ForegroundColor Yellow
-    Write-Host "  adb install -r `"$($ApkItem.FullName)`"" -ForegroundColor White
-    Write-Host "==========================================================" -ForegroundColor Green
+    Write-Host '==========================================================' -ForegroundColor Green
+    Write-Host '  BUILD SUCCESSFUL!' -ForegroundColor Green
+    Write-Host '==========================================================' -ForegroundColor Green
+    Write-Host ('APK Location : ' + $FullApkPath) -ForegroundColor White
+    Write-Host ('APK Size     : ' + $SizeMB + ' MB (' + $SizeBytes + ' bytes)') -ForegroundColor Cyan
+    Write-Host ('Build Time   : ' + $Duration + ' seconds')
+    Write-Host 'Target ABI   : ARM64-v8a (Clean, single-arch standalone)'
+    Write-Host ('Debug Symbols: ' + $SymbolsDir)
+    Write-Host ''
+    Write-Host 'Install to your connected Android phone using ADB:' -ForegroundColor Yellow
+    Write-Host ('  adb install -r "' + $FullApkPath + '"') -ForegroundColor White
+    Write-Host '==========================================================' -ForegroundColor Green
 } else {
-    Write-Warning "Build finished, but could not locate the APK output at $ApkPath."
+    Write-Warning ('Build finished, but could not locate the APK output at ' + $ApkPath)
 }
