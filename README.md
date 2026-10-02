@@ -179,13 +179,22 @@ flutter run
 ```
 
 ### Building for Release
-```bash
-# Build Android APK
-flutter build apk --release
 
-# Output path:
-# build/app/outputs/flutter-apk/app-release.apk
+To produce an ultra-slim standalone APK (~55% smaller) for physical modern Android devices:
+
+```bash
+# Windows PowerShell (automated analyze + test + arm64 build + obfuscation):
+.\scripts\build_release_arm64.ps1
+
+# Or on Bash / Linux / macOS:
+./scripts/build_release_arm64.sh
+
+# If custom icon fonts fail tree-shaking:
+.\scripts\build_release_arm64.ps1 -NoTreeShake
 ```
+
+Output APK will be generated at:
+`build/app/outputs/flutter-apk/app-release.apk` (or `app-arm64-v8a-release.apk`)
 
 ---
 

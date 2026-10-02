@@ -129,6 +129,14 @@ flutter test
 # Run a specific test file
 flutter test test/unit/backup_service_test.dart
 
-# Build Android Release APK
-flutter build apk --release
+# Build Ultra-Slim ARM64 Release APK (Windows PowerShell):
+.\scripts\build_release_arm64.ps1
+
+# Build with --no-tree-shake-icons (if custom icon fonts fail tree-shaking):
+.\scripts\build_release_arm64.ps1 -NoTreeShake
+
+# Build Ultra-Slim ARM64 Release APK (Bash / Linux / macOS / CI):
+./scripts/build_release_arm64.sh
+
+> **Agent Note**: When a user tags `scripts/build_release_arm64.ps1` or asks to build an optimized APK for their phone, execute this script directly. It targets `android-arm64`, applies `--obfuscate`, and strips debug symbols to produce the smallest possible standalone APK.
 ```
