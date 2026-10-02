@@ -1,11 +1,21 @@
-# EnvOps — Mobile Linux VPS DevOps Console & Terminal
+<p align="center">
+  <img src="assets/EnvOps.png" alt="EnvOps Logo" width="420">
+</p>
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
-[![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white)](https://dart.dev)
-[![Riverpod](https://img.shields.io/badge/State-Riverpod%203-blueviolet)](https://riverpod.dev)
-[![Security](https://img.shields.io/badge/Security-AES--256--CBC%20%7C%20KeyStore-success)](https://github.com)
-[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-orange)](https://github.com)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+<p align="center">
+  <b>A Secure, Client-Only Mobile DevOps Command Center & SSH Client</b>
+</p>
+
+<p align="center">
+  <a href="https://flutter.dev"><img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white" alt="Flutter"></a>
+  <a href="https://dart.dev"><img src="https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white" alt="Dart"></a>
+  <a href="https://riverpod.dev"><img src="https://img.shields.io/badge/State-Riverpod%203-blueviolet" alt="Riverpod"></a>
+  <img src="https://img.shields.io/badge/Security-AES--256--CBC%20%7C%20KeyStore-success" alt="Security">
+  <img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS-orange" alt="Platform">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
+</p>
+
+---
 
 **EnvOps** is a client-only mobile DevOps console and SSH client built with Flutter. It empowers systems engineers, DevOps professionals, and on-call infrastructure administrators to monitor, diagnose, and securely manage Linux VPS clusters directly from their mobile devices — with **zero third-party cloud servers** and **zero external telemetry**.
 

@@ -129,10 +129,13 @@ class SettingsScreen extends ConsumerWidget {
               style: TextStyle(fontSize: 12),
             ),
           ),
-          const ListTile(
-            leading: Icon(Icons.info_outline, color: Color(0xFF94A3B8)),
-            title: Text('Version'),
-            subtitle: Text('EnvOps v1.0.0 (Production Build)', style: TextStyle(fontSize: 12)),
+          ListTile(
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.asset('assets/envops_logo.png', width: 28, height: 28),
+            ),
+            title: const Text('Version'),
+            subtitle: const Text('EnvOps v1.0.0 (Production Build)', style: TextStyle(fontSize: 12)),
           ),
         ],
       ),

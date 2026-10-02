@@ -19,11 +19,15 @@ class FirstRunScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.terminal, color: AppTheme.primaryBlue, size: 36),
-                  SizedBox(width: 10),
-                  Text(
+                  Image.asset(
+                    'assets/envops_logo.png',
+                    height: 42,
+                    width: 42,
+                  ),
+                  const SizedBox(width: 12),
+                  const Text(
                     'ENVOPS',
                     style: TextStyle(
                       fontSize: 28,

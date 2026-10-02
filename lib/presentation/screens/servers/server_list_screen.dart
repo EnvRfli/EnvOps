@@ -28,8 +28,8 @@ class _ServerListScreenState extends ConsumerState<ServerListScreen> {
       appBar: AppBar(
         title: Row(
           children: [
-            const Icon(Icons.dns, size: 22, color: AppTheme.primaryBlue),
-            const SizedBox(width: 8),
+            Image.asset('assets/envops_logo.png', height: 26, width: 26),
+            const SizedBox(width: 10),
             const Text('ENVOPS', style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.0)),
             const Spacer(),
             serversAsync.maybeWhen(

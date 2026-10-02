@@ -17,8 +17,8 @@ class AppLockScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.lock_outline, size: 72, color: AppTheme.primaryBlue),
-                const SizedBox(height: 24),
+                Image.asset('assets/envops_logo.png', height: 80, width: 80),
+                const SizedBox(height: 20),
                 const Text(
                   'ENVOPS LOCKED',
                   style: TextStyle(
